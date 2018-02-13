@@ -27,9 +27,10 @@ void updateDisplay(int displayMode)
 
   char buffer[40];
   char returnString[200];
-
+/*
   Serial.print("displayMode=");
   Serial.println(displayMode);
+*/
   String windDirection;
 
   RtcDateTime now = Rtc.GetDateTime();
