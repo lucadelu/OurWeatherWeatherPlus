@@ -117,7 +117,7 @@ char uuid[]   = WEATHERPLUSPUBNUBPROTOCOL;
 
 #include "aREST.h"
 
-#include <String.h>
+#include <string.h>
 
 
 
@@ -710,7 +710,7 @@ void setup() {
   macID.toUpperCase();
   APssid = "OurWeather - " + macID;
 
-
+/*
   //WiFiManager
   //Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
@@ -853,7 +853,7 @@ void setup() {
   rest.set_id("1");
   rest.set_name("OurWeather");
 
-
+*/
 
   initialize60MinuteRain();
 
@@ -1037,7 +1037,7 @@ void setup() {
   AM2315_Humidity = 0.0;
   dewpoint = 0.0;
 
-
+/*
   if (WiFiPresent == true)
   {
 
@@ -1045,7 +1045,7 @@ void setup() {
 
     Serial.println("PubNub set up");
   }
-
+*/
 
 
 
@@ -1064,10 +1064,14 @@ void loop() {
   // put your main code here, to run repeatedly:
   //Serial.println("Starting Main Loop");
   // Handle REST calls
-  WiFiClient client = server.available();
 
+  /*
+  WiFiClient client = server.available();
+  */
+  
   int timeout;
   timeout = 0;
+  /*
   if (client)
   {
 
@@ -1092,13 +1096,13 @@ void loop() {
     }
   }
   client.stop();
-
+  */
 
 
 
   if (timeElapsed > 5000)
   {
-    Serial.println("5 second Loop executed");
+////    Serial.println("5 second Loop executed");
 
 
 
@@ -1107,15 +1111,15 @@ void loop() {
 
     timeElapsed = 0;
 
-    Serial.print("Free heap on ESP8266:");
+////    Serial.print("Free heap on ESP8266:");
     heapSize = ESP.getFreeHeap();
-    Serial.println(heapSize, DEC);
+////    Serial.println(heapSize, DEC);
 
 
     tmElements_t tm;
-    Serial.println("---------------");
-    Serial.println("DS3231 Clock");
-    Serial.println("---------------");
+////    Serial.println("---------------");
+////    Serial.println("DS3231 Clock");
+////    Serial.println("---------------");
 
     RtcDateTime now = Rtc.GetDateTime();
 
@@ -1123,16 +1127,16 @@ void loop() {
     currentTimeString = returnDateTime(now);
 
 
-    Serial.println(currentTimeString);
+////    Serial.println(currentTimeString);
 
     RestTimeStamp = currentTimeString;
 
     RestDataString = "";
 
 
-    Serial.println("---------------");
-    Serial.println("AM2315");
-    Serial.println("---------------");
+////    Serial.println("---------------");
+////    Serial.println("AM2315");
+////    Serial.println("---------------");
 
 
     if (!WXLink_Present)
@@ -1140,16 +1144,16 @@ void loop() {
 
       AOK = am2315.readData(dataAM2315);
 #ifdef DEBUGPRINT
-      Serial.print("AOK=");
-      Serial.println(AOK);
+////      Serial.print("AOK=");
+////      Serial.println(AOK);
 #endif
       AM2315_Temperature = dataAM2315[1];
       AM2315_Humidity = dataAM2315[0];
       dewpoint =  AM2315_Temperature - ((100.0 - AM2315_Humidity) / 5.0);
 
-      Serial.print("Temp: "); Serial.println(AM2315_Temperature);
-      Serial.print("Hum: "); Serial.println(AM2315_Humidity);
-      Serial.print("DwPt: "); Serial.println(dewpoint);
+////      Serial.print("Temp: "); Serial.println(AM2315_Temperature);
+////      Serial.print("Hum: "); Serial.println(AM2315_Humidity);
+////      Serial.print("DwPt: "); Serial.println(dewpoint);
 #ifdef DEBUGPRINT
   am2315.printStatistics();
 #endif
@@ -1163,6 +1167,7 @@ void loop() {
     RestDataString += String(AM2315_Temperature, 2) + ",";
     RestDataString += String(AM2315_Humidity, 2) + ",";
 
+/*
     Serial.println("---------------");
     if (BMP180Found)
       Serial.println("BMP180");
@@ -1171,7 +1176,7 @@ void loop() {
     else
       Serial.println("No BMP180/BMP280 Found");
     Serial.println("---------------");
-
+*/
 
     if (BMP180Found)
     {
@@ -1182,9 +1187,9 @@ void loop() {
       // Put Alitude in Meters
       BMP180_Pressure = bmp.readSealevelPressure(altitude_meters);
       /* Display atmospheric pressue in hPa */
-      Serial.print("Pressure:    ");
-      Serial.print(BMP180_Pressure / 100.0);
-      Serial.println(" kPa");
+////      Serial.print("Pressure:    ");
+////      Serial.print(BMP180_Pressure / 100.0);
+////      Serial.println(" kPa");
 
 
 
@@ -1206,9 +1211,9 @@ void loop() {
       /* First we get the current temperature from the BMP085 */
       float temperature;
       temperature = bmp.readTemperature();
-      Serial.print("Temperature: ");
-      Serial.print(temperature);
-      Serial.println(" C");
+////      Serial.print("Temperature: ");
+////      Serial.print(temperature);
+////      Serial.println(" C");
 
 
       BMP180_Temperature = temperature;
@@ -1221,11 +1226,11 @@ void loop() {
       float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
       float altitude;
       altitude = bmp.readAltitude(BMP180_Pressure);
-      Serial.print("Altitude:    ");
-      Serial.print(altitude);
+////      Serial.print("Altitude:    ");
+////      Serial.print(altitude);
 
       BMP180_Altitude = altitude;
-      Serial.println(" m");
+////      Serial.println(" m");
 
     }
 
@@ -1241,9 +1246,9 @@ void loop() {
       BMP180_Pressure = bme.readSealevelPressure(altitude_meters);
 
       /* Display atmospheric pressue in hPa */
-      Serial.print("Pressure:    ");
-      Serial.print(BMP180_Pressure / 100.0);
-      Serial.println(" hPa");
+////      Serial.print("Pressure:    ");
+////      Serial.print(BMP180_Pressure / 100.0);
+////      Serial.println(" hPa");
 
 
 
@@ -1265,9 +1270,9 @@ void loop() {
       /* First we get the current temperature from the BMP085 */
       float temperature;
       temperature = bme.readTemperature();
-      Serial.print("Temperature: ");
-      Serial.print(temperature);
-      Serial.println(" C");
+////      Serial.print("Temperature: ");
+////      Serial.print(temperature);
+////      Serial.println(" C");
 
 
       BMP180_Temperature = temperature;
@@ -1280,11 +1285,11 @@ void loop() {
       float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
       float altitude;
       altitude = bme.readAltitude(SENSORS_PRESSURE_SEALEVELHPA);
-      Serial.print("Altitude:    ");
-      Serial.print(altitude);
+////      Serial.print("Altitude:    ");
+////      Serial.print(altitude);
 
       BMP180_Altitude = altitude;
-      Serial.println(" m");
+////      Serial.println(" m");
 
     }
 
@@ -1297,9 +1302,9 @@ void loop() {
     if (AirQualityPresent)
     {
 
-      Serial.println("---------------");
-      Serial.println("AirQualitySensor");
-      Serial.println("---------------");
+////      Serial.println("---------------");
+////      Serial.println("AirQualitySensor");
+////      Serial.println("---------------");
 
 
 #ifdef DEBUGPRINT
@@ -1340,12 +1345,14 @@ void loop() {
 
     }
 
+/*
     Serial.println("---------------");
     if (SunAirPlus_Present)
       Serial.println("SunAirPlus");
     else
       Serial.println("SunAirPlus Not Present");
     Serial.println("---------------");
+*/
 
     // if SunAirPlus present, read charge data
 
@@ -1394,12 +1401,14 @@ void loop() {
 
     }
 
+/*
     Serial.println("---------------");
     if (WXLink_Present)
       Serial.println("WXLink");
     else
       Serial.println("WXLink Not Present");
     Serial.println("---------------");
+*/
 
     // read variables from WXLink
 
@@ -1425,9 +1434,9 @@ void loop() {
 
 
 
-    Serial.println("---------------");
-    Serial.println("WeatherRack");
-    Serial.println("---------------");
+////    Serial.println("---------------");
+////    Serial.println("WeatherRack");
+////    Serial.println("---------------");
 
     if (WXLink_Present == false)
     {
@@ -1545,10 +1554,7 @@ void loop() {
 
 
 
-
-
-
-
+/*
     Serial.print("windSpeedMin =");
     Serial.print(windSpeedMin);
     Serial.print(" windSpeedMax =");
@@ -1589,7 +1595,7 @@ void loop() {
 
 
     Serial.println(" ");
-
+*/
 
 
     RestDataString += String(currentWindSpeed, 2) + ",";
@@ -1653,8 +1659,8 @@ void loop() {
       String lastBootTimeString;
       lastBootTimeString = returnDateTime(lastBoot);
 
-      Serial.print("lastBoot = ");
-      Serial.println(lastBootTimeString);
+////      Serial.print("lastBoot = ");
+////      Serial.println(lastBootTimeString);
 
       timeElapsed300Seconds = 0;
 
@@ -1678,7 +1684,7 @@ void loop() {
         startOfDayRain = rainTotal;
       }
 
-      Serial.println("Attempting to send data to WeatherUnderground");
+////      Serial.println("Attempting to send data to WeatherUnderground");
 
       bool dataStale;
       dataStale = false;
@@ -1698,10 +1704,12 @@ void loop() {
         }
       }
 
+/*
       if (dataStale == false)
         Serial.println("WeatherUnderground Data New - sent");
       else
         Serial.println("WeatherUnderground Data Stale - Not sent");
+*/
 
       if (dataStale == false)
       {
@@ -1728,7 +1736,7 @@ void loop() {
         publishPubNubMessage(SendString);
       }
     }
-
+    Serial.println("Values=" + RestDataString);
 
     updateDisplay(WeatherDisplayMode);
 
@@ -1754,10 +1762,10 @@ void loop() {
 
       SCL = digitalRead(4);
       SDA = digitalRead(5);
-      Serial.print("SCL/SDA=");
-      Serial.print(SCL);
-      Serial.print("/");
-      Serial.println(SDA);
+////      Serial.print("SCL/SDA=");
+////      Serial.print(SCL);
+////      Serial.print("/");
+////      Serial.println(SDA);
 
       if ((SCL == 0) || (SDA == 0))
       {
@@ -1767,7 +1775,7 @@ void loop() {
     }
 
 
-    Serial.println("OutOfDisplay");
+////    Serial.println("OutOfDisplay");
 
   }
 
